@@ -1,0 +1,28 @@
+# Maven
+target/
+
+# Visual Studio Code
+.vscode/
+.code-workspace
+
+# Java
+*.class
+*.log
+hs_err_pid*
+replay_pid*
+
+# IDEs
+.idea/
+*.iml
+.classpath
+.project
+.settings/
+
+# Operating system
+.DS_Store
+Thumbs.db
+
+# Local configuration
+.env
+.env.*
+!.env.example
