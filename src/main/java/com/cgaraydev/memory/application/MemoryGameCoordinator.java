@@ -23,7 +23,10 @@ public final class MemoryGameCoordinator {
 
     private MemorySession session;
     private List<String> availablePairIds = List.of();
-    private boolean paused;
+
+    // Una pausa manual no se cancela al recuperar el foco de la ventana.
+    private boolean manuallyPaused;
+    private boolean windowFocused = true;
 
     public MemoryGameCoordinator(MemoryClock clock) {
         this(new MemoryEngine(), clock, new Random());
@@ -38,10 +41,8 @@ public final class MemoryGameCoordinator {
         this.random = Objects.requireNonNull(random);
 
         Objects.requireNonNull(clock);
-
         this.timer = new MemoryTimer(clock);
-        this.pendingResolution =
-                new MemoryPendingResolution(clock);
+        this.pendingResolution = new MemoryPendingResolution(clock);
     }
 
     public MemorySession session() {
@@ -52,8 +53,13 @@ public final class MemoryGameCoordinator {
         return session != null;
     }
 
+    public boolean isManuallyPaused() {
+        return manuallyPaused;
+    }
+
     public boolean isPaused() {
-        return paused;
+        return session != null && !isFinished()
+                && (manuallyPaused || !windowFocused);
     }
 
     public boolean isFinished() {
@@ -63,7 +69,7 @@ public final class MemoryGameCoordinator {
 
     public boolean canSelectCard() {
         return session != null
-                && !paused
+                && !isPaused()
                 && session.phase() == MemoryPhase.SELECTING;
     }
 
@@ -75,14 +81,10 @@ public final class MemoryGameCoordinator {
         return pendingResolution.remainingMillis();
     }
 
-    public void start(
-            Difficulty difficulty,
-            List<String> pairIds
-    ) {
+    public void start(Difficulty difficulty, List<String> pairIds) {
         if (session != null) {
             return;
         }
-
         beginGame(difficulty, pairIds);
     }
 
@@ -90,80 +92,74 @@ public final class MemoryGameCoordinator {
         if (session == null) {
             return;
         }
-
-        beginGame(
-                session.difficulty(),
-                availablePairIds
-        );
+        beginGame(session.difficulty(), availablePairIds);
     }
 
     public void returnToIntro() {
         pendingResolution.cancel();
         timer.reset();
-
         session = null;
         availablePairIds = List.of();
-        paused = false;
+        manuallyPaused = false;
+        // No alteramos windowFocused: refleja el estado real de la ventana.
     }
 
-    public void selectCard(
-            String sessionId,
-            int cardId
-    ) {
+    public void selectCard(String sessionId, int cardId) {
         if (!canSelectCard()) {
             return;
         }
 
-        MemorySession selected = engine.select(
-                session,
-                sessionId,
-                cardId
-        );
-
+        MemorySession selected = engine.select(session, sessionId, cardId);
         if (selected == session) {
             return;
         }
 
         session = selected;
-
         if (session.phase() == MemoryPhase.RESOLVING) {
-            pendingResolution.schedule(
-                    session.id(),
-                    session.moves()
-            );
+            pendingResolution.schedule(session.id(), session.moves());
         }
     }
 
     public void pause() {
-        if (session == null || isFinished() || paused) {
+        if (session == null || isFinished() || manuallyPaused) {
             return;
         }
-
-        paused = true;
-
-        timer.pause();
-        pendingResolution.pause();
+        manuallyPaused = true;
+        synchronizeActivity();
     }
 
     public void resume() {
-        if (session == null || isFinished() || !paused) {
+        if (session == null || isFinished() || !manuallyPaused) {
             return;
         }
+        manuallyPaused = false;
+        synchronizeActivity();
+    }
 
-        paused = false;
+    public void onWindowFocusChanged(boolean focused) {
+        if (windowFocused == focused) {
+            return;
+        }
+        windowFocused = focused;
+        synchronizeActivity();
+    }
 
-        timer.resume();
-        pendingResolution.resume();
+    private void synchronizeActivity() {
+        if (session == null || isFinished() || isPaused()) {
+            timer.pause();
+            pendingResolution.pause();
+        } else {
+            timer.resume();
+            pendingResolution.resume();
+        }
     }
 
     public void update() {
-        if (session == null || paused || isFinished()) {
+        if (session == null || isPaused() || isFinished()) {
             return;
         }
 
-        MemoryResolutionToken token =
-                pendingResolution.takeReady();
-
+        MemoryResolutionToken token = pendingResolution.takeReady();
         if (token != null) {
             session = engine.resolve(
                     session,
@@ -171,16 +167,12 @@ public final class MemoryGameCoordinator {
                     token.move()
             );
         }
-
         if (isFinished()) {
             timer.pause();
         }
     }
 
-    private void beginGame(
-            Difficulty difficulty,
-            List<String> pairIds
-    ) {
+    private void beginGame(Difficulty difficulty, List<String> pairIds) {
         // Validamos el tablero antes de sustituir la partida.
         MemorySession newSession = engine.start(
                 UUID.randomUUID().toString(),
@@ -188,7 +180,6 @@ public final class MemoryGameCoordinator {
                 pairIds,
                 random
         );
-
         List<String> newBank = List.copyOf(pairIds);
 
         pendingResolution.cancel();
@@ -196,6 +187,7 @@ public final class MemoryGameCoordinator {
 
         session = newSession;
         availablePairIds = newBank;
-        paused = false;
+        manuallyPaused = false;
+        synchronizeActivity();
     }
 }

@@ -1,0 +1,709 @@
+/*
+ * Memory Desktop - Grafito, vino y nogal.
+ * JavaFX CSS usa propiedades -fx-; no son prefijos de navegador.
+ * Paleta: grafito #191716, nogal #2B2421, vino #A64D48,
+ * arcilla #C47C61 y marfil #F2E8DA.
+ */
+
+.app-root {
+    -fx-background-color: #191716;
+    -fx-font-family: "Segoe UI";
+    -fx-font-size: 13px;
+}
+
+/*
+ * Identidad tipográfica (Windows 11):
+ * - Georgia: títulos con personalidad, reservada a textos grandes.
+ * - Segoe UI: etiquetas, menús y botones legibles.
+ * - Consolas: cifras y temporizadores fáciles de comparar.
+ * Las familias se resuelven desde el sistema, sin archivos de fuentes.
+ */
+.label, .button {
+    -fx-font-family: "Segoe UI";
+}
+
+
+.app-header {
+    -fx-background-color: #151312;
+    -fx-border-color: #39302D;
+    -fx-border-width: 0 0 1 0;
+    -fx-padding: 14 30;
+}
+
+.app-title {
+    -fx-text-fill: #E2B3A0;
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+}
+
+.app-kicker {
+    -fx-text-fill: #AB9D98;
+    -fx-font-size: 10px;
+}
+
+.header-detail {
+    -fx-text-fill: #BDAEA5;
+    -fx-font-size: 11px;
+}
+
+.content-stage {
+    -fx-padding: 14 22;
+}
+
+.intro-view {
+    -fx-padding: 18 10;
+}
+
+.hero-title {
+    -fx-text-fill: #F3EBE5;
+    -fx-font-size: 35px;
+    -fx-font-weight: bold;
+}
+
+.intro-description {
+    -fx-text-fill: #C0B2AC;
+    -fx-font-size: 15px;
+    -fx-alignment: center;
+    -fx-text-alignment: center;
+}
+
+.difficulty-row {
+    -fx-padding: 16 0 6 0;
+}
+
+.difficulty-tile {
+    -fx-background-color: #292320;
+    -fx-border-color: #493C37;
+    -fx-border-width: 1;
+    -fx-border-radius: 13;
+    -fx-background-radius: 13;
+    -fx-padding: 22 16;
+    -fx-pref-width: 198px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.25), 15, 0.18, 0, 6);
+}
+
+.difficulty-tile:hover {
+    -fx-background-color: #312824;
+    -fx-border-color: #81584F;
+}
+
+.difficulty-name {
+    -fx-text-fill: #F3EBE5;
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+}
+
+.difficulty-detail {
+    -fx-text-fill: #BCADA6;
+    -fx-font-size: 13px;
+}
+
+.primary-button {
+    -fx-background-color: #A64D48;
+    -fx-text-fill: #FFF7F1;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 8;
+    -fx-min-width: 125px;
+    -fx-padding: 10 20;
+    -fx-cursor: hand;
+}
+
+.primary-button:hover {
+    -fx-background-color: #BE5D54;
+}
+
+.primary-button:pressed {
+    -fx-background-color: #8A3E3B;
+}
+
+.game-view {
+    -fx-fill-width: true;
+}
+
+.stats-row {
+    -fx-padding: 0;
+}
+
+.stat-tile {
+    -fx-background-color: #2A2421;
+    -fx-border-color: #483A35;
+    -fx-border-width: 1;
+    -fx-background-radius: 10;
+    -fx-border-radius: 10;
+    -fx-padding: 10 16;
+    -fx-min-width: 150px;
+    -fx-pref-width: 190px;
+}
+
+.stat-title {
+    -fx-text-fill: #C4AEA4;
+    -fx-font-size: 10px;
+    -fx-font-weight: bold;
+}
+
+.stat-value {
+    -fx-text-fill: #F3EBE5;
+    -fx-font-size: 23px;
+    -fx-font-weight: bold;
+}
+
+.game-toolbar {
+    -fx-padding: 2 2;
+}
+
+.difficulty-pill {
+    -fx-background-color: #3B2A28;
+    -fx-text-fill: #E9B09B;
+    -fx-background-radius: 6;
+    -fx-padding: 8 14;
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+}
+
+.secondary-button,
+.footer-button {
+    -fx-background-color: #463632;
+    -fx-text-fill: #F4EAE3;
+    -fx-background-radius: 7;
+    -fx-padding: 9 17;
+    -fx-font-size: 13px;
+    -fx-cursor: hand;
+}
+
+.secondary-button:hover,
+.footer-button:hover {
+    -fx-background-color: #6D413C;
+}
+
+.secondary-button:pressed,
+.footer-button:pressed {
+    -fx-background-color: #8F4742;
+}
+
+.secondary-button:disabled {
+    -fx-opacity: 0.48;
+}
+
+.board-stage {
+    -fx-background-color: #231E1C;
+    -fx-border-color: #483A35;
+    -fx-border-width: 1;
+    -fx-border-radius: 12;
+    -fx-background-radius: 12;
+    -fx-padding: 6;
+}
+
+.board-scroll {
+    -fx-background: transparent;
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+
+.board-scroll > .viewport {
+    -fx-background-color: transparent;
+}
+
+.board-holder {
+    -fx-background-color: transparent;
+    -fx-padding: 13;
+}
+
+.memory-card {
+    -fx-alignment: center;
+    -fx-text-alignment: center;
+    -fx-font-weight: bold;
+    -fx-border-width: 1;
+    -fx-border-radius: 10;
+    -fx-background-radius: 10;
+    -fx-padding: 4;
+    -fx-cursor: hand;
+    -fx-background-insets: 0;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.20), 10, 0.10, 0, 3);
+}
+
+.memory-card-hidden {
+    -fx-background-color: linear-gradient(to bottom, #564039, #3D2F2B);
+    -fx-border-color: #806052;
+    -fx-text-fill: #E1B39A;
+}
+
+.memory-card-hidden:hover {
+    -fx-background-color: linear-gradient(to bottom, #6D4D43, #513A34);
+    -fx-border-color: #BB7863;
+}
+
+.memory-card-revealed {
+    -fx-background-color: linear-gradient(to bottom, #FFF4E5, #EADBCB);
+    -fx-border-color: #CE9983;
+    -fx-text-fill: #352623;
+    -fx-effect: dropshadow(gaussian, rgba(183, 98, 76, 0.25), 14, 0.2, 0, 2);
+}
+
+.memory-card-matched {
+    -fx-background-color: linear-gradient(to bottom, #86524B, #653B37);
+    -fx-border-color: #C9826B;
+    -fx-text-fill: #FFF0E3;
+    -fx-effect: dropshadow(gaussian, rgba(177, 87, 68, 0.24), 12, 0.18, 0, 2);
+}
+
+.memory-card:disabled {
+    -fx-opacity: 1;
+}
+
+.pause-overlay {
+    -fx-background-color: rgba(23, 18, 17, 0.95);
+    -fx-background-radius: 11;
+    -fx-cursor: hand;
+}
+
+.pause-overlay:hover {
+    -fx-background-color: rgba(31, 23, 21, 0.96);
+}
+
+.pause-title {
+    -fx-text-fill: #E4AB94;
+    -fx-font-size: 31px;
+    -fx-font-weight: bold;
+}
+
+.pause-subtitle {
+    -fx-text-fill: #C9B5AC;
+    -fx-font-size: 14px;
+}
+
+.status-label {
+    -fx-text-fill: #DA9D84;
+    -fx-font-size: 13px;
+    -fx-padding: 4 6;
+}
+
+.app-footer {
+    -fx-background-color: #151312;
+    -fx-border-color: #39302D;
+    -fx-border-width: 1 0 0 0;
+    -fx-padding: 12 28;
+}
+
+.footer-label {
+    -fx-text-fill: #A59690;
+    -fx-font-size: 10px;
+}
+
+/* Contorno visible al navegar con teclado. */
+.memory-card-hidden:focus-visible {
+    -fx-border-width: 2;
+    -fx-border-color: #E2B3A0;
+}
+
+
+/* Pantalla de victoria: tonos grafito y vino, sin imágenes externas. */
+.victory-overlay {
+    -fx-background-color: rgba(17, 13, 12, 0.93);
+    -fx-padding: 18;
+}
+
+.victory-panel {
+    -fx-background-color: linear-gradient(to bottom, #332724, #241D1A);
+    -fx-border-color: #755044;
+    -fx-border-width: 1;
+    -fx-border-radius: 18;
+    -fx-background-radius: 18;
+    -fx-padding: 30 28;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.45), 32, 0.18, 0, 12);
+}
+
+.victory-eyebrow {
+    -fx-text-fill: #D69B85;
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+}
+
+.victory-title {
+    -fx-text-fill: #F5EAE1;
+    -fx-font-size: 32px;
+    -fx-font-weight: bold;
+}
+
+.victory-difficulty {
+    -fx-text-fill: #C8ACA1;
+    -fx-font-size: 12px;
+}
+
+.victory-emblem {
+    -fx-background-color: #653B37;
+    -fx-background-radius: 40;
+    -fx-border-color: #C9826B;
+    -fx-border-width: 1;
+    -fx-border-radius: 40;
+    -fx-text-fill: #FFF0E3;
+    -fx-font-size: 26px;
+    -fx-font-weight: bold;
+    -fx-alignment: center;
+    -fx-min-width: 56px;
+    -fx-min-height: 56px;
+    -fx-pref-width: 56px;
+    -fx-pref-height: 56px;
+}
+
+.victory-message {
+    -fx-text-fill: #F1DED1;
+    -fx-font-size: 16px;
+}
+
+.victory-stats {
+    -fx-padding: 14 0 4 0;
+}
+
+.victory-stat {
+    -fx-background-color: #3A2C27;
+    -fx-border-color: #61473D;
+    -fx-border-width: 1;
+    -fx-border-radius: 10;
+    -fx-background-radius: 10;
+    -fx-pref-width: 150px;
+    -fx-padding: 14 12;
+}
+
+.victory-stat-name {
+    -fx-text-fill: #CDB3A5;
+    -fx-font-size: 10px;
+    -fx-font-weight: bold;
+}
+
+.victory-stat-number {
+    -fx-text-fill: #FFF1E8;
+    -fx-font-size: 23px;
+    -fx-font-weight: bold;
+}
+
+.victory-actions {
+    -fx-padding: 6 0 0 0;
+}
+
+.victory-primary-button,
+.victory-secondary-button {
+    -fx-background-radius: 9;
+    -fx-padding: 12 20;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+    -fx-min-width: 165px;
+}
+
+.victory-primary-button {
+    -fx-background-color: #A64D48;
+    -fx-text-fill: #FFF5EC;
+}
+
+.victory-primary-button:hover {
+    -fx-background-color: #BF635A;
+}
+
+.victory-secondary-button {
+    -fx-background-color: #4C3933;
+    -fx-text-fill: #F0DFD2;
+}
+
+.victory-secondary-button:hover {
+    -fx-background-color: #68473C;
+}
+
+
+/* Récords: clasificación local, estilo grafito y vino. */
+.victory-record-label {
+    -fx-text-fill: #D69B85;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+}
+
+.records-link-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: #E1B39A;
+    -fx-underline: true;
+    -fx-cursor: hand;
+    -fx-font-size: 13px;
+}
+
+.records-link-button:hover {
+    -fx-text-fill: #FFF0E3;
+}
+
+.records-overlay {
+    -fx-background-color: rgba(17, 13, 12, 0.95);
+    -fx-padding: 12;
+}
+
+.records-panel {
+    -fx-background-color: linear-gradient(to bottom, #332724, #241D1A);
+    -fx-border-color: #755044;
+    -fx-border-width: 1;
+    -fx-border-radius: 16;
+    -fx-background-radius: 16;
+    -fx-padding: 16 20;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.45), 26, 0.18, 0, 10);
+}
+
+.records-title {
+    -fx-text-fill: #F5EAE1;
+    -fx-font-size: 23px;
+    -fx-font-weight: bold;
+}
+
+.records-subtitle, .records-description {
+    -fx-text-fill: #C6AEA2;
+    -fx-font-size: 12px;
+}
+
+.record-tab-button {
+    -fx-background-color: #3E302B;
+    -fx-text-fill: #DDC8BC;
+    -fx-background-radius: 8;
+    -fx-padding: 9 22;
+    -fx-cursor: hand;
+}
+
+.record-tab-button:hover, .record-tab-selected {
+    -fx-background-color: #A64D48;
+    -fx-text-fill: #FFFFFF;
+}
+
+.records-scroll, .records-scroll > .viewport {
+    -fx-background: transparent;
+    -fx-background-color: transparent;
+}
+
+.records-list {
+    -fx-padding: 3 8 3 2;
+}
+
+.record-row {
+    -fx-background-color: #392C27;
+    -fx-border-color: #59453C;
+    -fx-border-width: 1;
+    -fx-border-radius: 9;
+    -fx-background-radius: 9;
+    -fx-padding: 9 12;
+}
+
+.record-row-first {
+    -fx-background-color: #55332D;
+    -fx-border-color: #B26F59;
+}
+
+.record-position {
+    -fx-text-fill: #E9B29E;
+    -fx-font-size: 17px;
+    -fx-font-weight: bold;
+    -fx-min-width: 32px;
+}
+
+.record-date {
+    -fx-text-fill: #CDB8AD;
+    -fx-font-size: 12px;
+}
+
+.record-stat {
+    -fx-text-fill: #F0E0D6;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+}
+
+.record-time {
+    -fx-text-fill: #E6A68D;
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+    -fx-min-width: 54px;
+}
+
+.record-empty {
+    -fx-text-fill: #BDA99F;
+    -fx-padding: 32;
+    -fx-font-size: 14px;
+}
+
+.records-danger-button {
+    -fx-background-color: transparent;
+    -fx-border-color: #8F4A43;
+    -fx-border-radius: 8;
+    -fx-text-fill: #E8AFA5;
+    -fx-padding: 10 16;
+    -fx-cursor: hand;
+}
+
+.records-danger-button:hover {
+    -fx-background-color: #633630;
+}
+
+
+/* v1.9: estadísticas transparentes del ranking, sin simular historial completo. */
+.records-summary-row {
+    -fx-padding: 2 0 0 0;
+}
+
+.records-summary-tile {
+    -fx-background-color: #342824;
+    -fx-border-color: #5E483F;
+    -fx-border-width: 1;
+    -fx-border-radius: 9;
+    -fx-background-radius: 9;
+    -fx-padding: 9 12;
+    -fx-min-width: 0;
+    -fx-pref-width: 190px;
+}
+
+.records-summary-title {
+    -fx-text-fill: #C8AFA4;
+    -fx-font-size: 9px;
+    -fx-font-weight: bold;
+}
+
+.records-summary-value {
+    -fx-text-fill: #F5EAE1;
+    -fx-font-size: 21px;
+    -fx-font-weight: bold;
+}
+
+.records-latest {
+    -fx-text-fill: #CDB8AD;
+    -fx-font-size: 12px;
+    -fx-padding: 1 2 0 2;
+}
+
+.record-row-second {
+    -fx-border-color: #8F6A5A;
+}
+
+.record-row-third {
+    -fx-border-color: #775344;
+}
+
+.record-row:hover {
+    -fx-background-color: #49352F;
+}
+
+.record-row-first:hover {
+    -fx-background-color: #633C33;
+}
+
+/* Estadísticas acumuladas: independientes del ranking visible. */
+.records-history-heading {
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #D7A28D;
+}
+.records-history-note {
+    -fx-text-fill: #B6A39C;
+    -fx-font-size: 11px;
+    -fx-text-alignment: center;
+    -fx-wrap-text: true;
+}
+
+/* v2.1: vistas independientes y listas con mayor altura útil. */
+.records-mode-button {
+    -fx-background-color: #332823;
+    -fx-border-color: #62483D;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+    -fx-text-fill: #D7BBAA;
+    -fx-padding: 9 30;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+}
+.records-mode-button:hover {
+    -fx-background-color: #5B3932;
+}
+.records-mode-selected {
+    -fx-background-color: #A64D48;
+    -fx-border-color: #C58373;
+    -fx-text-fill: #FFFFFF;
+}
+.records-mode-selected:hover {
+    -fx-background-color: #B76055;
+}
+.history-page-button {
+    -fx-background-color: #49332D;
+    -fx-background-radius: 7;
+    -fx-text-fill: #F5EAE1;
+    -fx-padding: 7 16;
+    -fx-cursor: hand;
+}
+.history-page-button:hover {
+    -fx-background-color: #65443A;
+}
+.history-page-button:disabled {
+    -fx-opacity: 0.42;
+}
+.history-page-label {
+    -fx-text-fill: #D5BDAF;
+    -fx-font-size: 12px;
+    -fx-min-width: 190px;
+    -fx-alignment: center;
+}
+.history-pagination {
+    -fx-padding: 1 0;
+}
+.history-row-date {
+    -fx-text-fill: #EAD0C0;
+    -fx-font-size: 13px;
+    -fx-min-width: 142px;
+}
+.history-row-misses {
+    -fx-text-fill: #CDB8AD;
+    -fx-font-size: 12px;
+    -fx-min-width: 96px;
+}
+
+
+/* v2.2: jerarquía tipográfica definitiva. */
+.app-title,
+.hero-title,
+.difficulty-name,
+.pause-title,
+.victory-title,
+.records-title {
+    -fx-font-family: "Georgia";
+    -fx-font-weight: bold;
+}
+
+.app-title {
+    -fx-font-size: 26px;
+}
+
+.hero-title {
+    -fx-font-size: 40px;
+}
+
+.difficulty-name {
+    -fx-font-size: 25px;
+}
+
+.pause-title {
+    -fx-font-size: 33px;
+}
+
+.victory-title {
+    -fx-font-size: 34px;
+}
+
+.records-title {
+    -fx-font-size: 27px;
+}
+
+/* Números monoespaciados para evitar saltos visuales al actualizar el reloj. */
+.stat-value,
+.victory-stat-number,
+.records-summary-value,
+.record-position,
+.record-time,
+.history-page-label {
+    -fx-font-family: "Consolas";
+}
+
+/* Textos auxiliares ligeramente mayores para mejorar la lectura. */
+.app-kicker,
+.footer-label,
+.stat-title,
+.victory-stat-name,
+.records-summary-title {
+    -fx-font-size: 11px;
+}

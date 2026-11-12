@@ -1,0 +1,298 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane xmlns="http://javafx.com/javafx/25"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.cgaraydev.memory.ui.MemoryController"
+            styleClass="app-root">
+
+    <top>
+        <HBox alignment="CENTER_LEFT" spacing="16" styleClass="app-header">
+            <VBox spacing="3">
+                <Label text="MEMORY" styleClass="app-title"/>
+                <Label text="DESKTOP EDITION" styleClass="app-kicker"/>
+            </VBox>
+            <Region HBox.hgrow="ALWAYS"/>
+            <Label text="JUEGO DE PAREJAS" styleClass="header-detail"/>
+        </HBox>
+    </top>
+
+    <center>
+        <StackPane styleClass="content-stage">
+            <VBox fx:id="introView" alignment="CENTER" spacing="22"
+                  maxWidth="710" styleClass="intro-view">
+                <Label text="MEMORY DESKTOP" styleClass="hero-title"/>
+                <Label text="Encuentra todas las parejas con la menor cantidad de movimientos."
+                       wrapText="true" styleClass="intro-description"/>
+
+                <HBox alignment="CENTER" spacing="14" styleClass="difficulty-row">
+                    <VBox alignment="CENTER" spacing="10" styleClass="difficulty-tile">
+                        <Label text="Fácil" styleClass="difficulty-name"/>
+                        <Label text="6 parejas" styleClass="difficulty-detail"/>
+                        <Label text="3 × 4 cartas" styleClass="difficulty-detail"/>
+                        <Button text="Jugar" onAction="#startEasy"
+                                styleClass="primary-button"/>
+                    </VBox>
+                    <VBox alignment="CENTER" spacing="10" styleClass="difficulty-tile">
+                        <Label text="Normal" styleClass="difficulty-name"/>
+                        <Label text="10 parejas" styleClass="difficulty-detail"/>
+                        <Label text="4 × 5 cartas" styleClass="difficulty-detail"/>
+                        <Button text="Jugar" onAction="#startNormal"
+                                styleClass="primary-button"/>
+                    </VBox>
+                    <VBox alignment="CENTER" spacing="10" styleClass="difficulty-tile">
+                        <Label text="Difícil" styleClass="difficulty-name"/>
+                        <Label text="15 parejas" styleClass="difficulty-detail"/>
+                        <Label text="5 × 6 cartas" styleClass="difficulty-detail"/>
+                        <Button text="Jugar" onAction="#startHard"
+                                styleClass="primary-button"/>
+                    </VBox>
+                </HBox>
+
+                <HBox alignment="CENTER">
+                    <Button text="Récords e historial" onAction="#showRecords"
+                            styleClass="secondary-button"/>
+                </HBox>
+            </VBox>
+
+            <VBox fx:id="gameView" alignment="TOP_CENTER" spacing="14"
+                  visible="false" managed="false" styleClass="game-view">
+
+                <HBox spacing="12" alignment="CENTER" styleClass="stats-row">
+                    <VBox alignment="CENTER_LEFT" spacing="6" styleClass="stat-tile">
+                        <Label text="TIEMPO" styleClass="stat-title"/>
+                        <Label fx:id="timeLabel" text="00:00" styleClass="stat-value"/>
+                    </VBox>
+                    <VBox alignment="CENTER_LEFT" spacing="6" styleClass="stat-tile">
+                        <Label text="MOVIMIENTOS" styleClass="stat-title"/>
+                        <Label fx:id="movesLabel" text="0" styleClass="stat-value"/>
+                    </VBox>
+                    <VBox alignment="CENTER_LEFT" spacing="6" styleClass="stat-tile">
+                        <Label text="PAREJAS" styleClass="stat-title"/>
+                        <Label fx:id="pairsLabel" text="0 / 6" styleClass="stat-value"/>
+                    </VBox>
+                </HBox>
+
+                <HBox alignment="CENTER_LEFT" spacing="10" styleClass="game-toolbar">
+                    <Label fx:id="difficultyLabel" text="FÁCIL"
+                           styleClass="difficulty-pill"/>
+                    <Region HBox.hgrow="ALWAYS"/>
+                    <Button fx:id="pauseButton" text="Pausar"
+                            onAction="#togglePause" styleClass="secondary-button"/>
+                    <Button text="Reiniciar" onAction="#restart"
+                            styleClass="secondary-button"/>
+                    <Button text="Menú" onAction="#returnToMenu"
+                            styleClass="secondary-button"/>
+                </HBox>
+
+                <StackPane VBox.vgrow="ALWAYS" styleClass="board-stage">
+                    <ScrollPane fx:id="boardScroll" fitToWidth="true"
+                                fitToHeight="true" pannable="true"
+                                hbarPolicy="AS_NEEDED" vbarPolicy="AS_NEEDED"
+                                styleClass="board-scroll">
+                        <content>
+                            <StackPane alignment="CENTER" styleClass="board-holder">
+                                <GridPane fx:id="board" alignment="CENTER"
+                                          hgap="10" vgap="10"/>
+                            </StackPane>
+                        </content>
+                    </ScrollPane>
+                    <StackPane fx:id="pauseOverlay" visible="false"
+                               alignment="CENTER" styleClass="pause-overlay"
+                               pickOnBounds="true" onMouseClicked="#resumeFromBoard">
+                        <VBox alignment="CENTER" spacing="10">
+                            <Label fx:id="pauseTitleLabel" text="EN PAUSA"
+                                   styleClass="pause-title"/>
+                            <Label fx:id="pauseHintLabel"
+                                   text="Haz clic en el tablero para reanudar"
+                                   styleClass="pause-subtitle"/>
+                        </VBox>
+                    </StackPane>
+                </StackPane>
+
+                <Label fx:id="statusLabel" text="Selecciona dos cartas"
+                       wrapText="true" styleClass="status-label"/>
+            </VBox>
+
+            <!-- Capa modal de victoria: visible únicamente al completar la partida. -->
+            <StackPane fx:id="victoryOverlay" visible="false" managed="false"
+                       pickOnBounds="true" styleClass="victory-overlay">
+                <VBox fx:id="victoryPanel" alignment="CENTER" spacing="16"
+                      maxWidth="570" styleClass="victory-panel">
+                    <Label text="PARTIDA COMPLETADA" styleClass="victory-eyebrow"/>
+                    <Label text="¡Todas las parejas!" styleClass="victory-title"/>
+                    <Label fx:id="victoryDifficultyLabel" text="FÁCIL · 6 PAREJAS"
+                           styleClass="victory-difficulty"/>
+                    <Label text="✓" styleClass="victory-emblem"/>
+                    <Label fx:id="victoryMessageLabel" text="Tablero resuelto. ¡Bien jugado!"
+                           styleClass="victory-message"/>
+
+                    <HBox alignment="CENTER" spacing="12" styleClass="victory-stats">
+                        <VBox alignment="CENTER" spacing="5" styleClass="victory-stat">
+                            <Label text="TIEMPO" styleClass="victory-stat-name"/>
+                            <Label fx:id="victoryTimeLabel" text="00:00"
+                                   styleClass="victory-stat-number"/>
+                        </VBox>
+                        <VBox alignment="CENTER" spacing="5" styleClass="victory-stat">
+                            <Label text="MOVIMIENTOS" styleClass="victory-stat-name"/>
+                            <Label fx:id="victoryMovesLabel" text="0"
+                                   styleClass="victory-stat-number"/>
+                        </VBox>
+                        <VBox alignment="CENTER" spacing="5" styleClass="victory-stat">
+                            <Label text="DESACIERTOS" styleClass="victory-stat-name"/>
+                            <Label fx:id="victoryFailedAttemptsLabel" text="0"
+                                   styleClass="victory-stat-number"/>
+                        </VBox>
+                    </HBox>
+
+                    <Label fx:id="victoryRecordLabel" text=""
+                           styleClass="victory-record-label"/>
+
+                    <HBox alignment="CENTER" spacing="12" styleClass="victory-actions">
+                        <Button fx:id="victoryAgainButton" text="Jugar otra vez"
+                                onAction="#playAgain" styleClass="victory-primary-button"/>
+                        <Button text="Volver al menú" onAction="#returnToMenu"
+                                styleClass="victory-secondary-button"/>
+                    </HBox>
+                    <HBox alignment="CENTER">
+                        <Button text="Récords e historial" onAction="#showRecords"
+                                styleClass="records-link-button"/>
+                    </HBox>
+                </VBox>
+            </StackPane>
+
+<!-- Rankings e historial ocupan el espacio disponible en vistas separadas. -->
+<StackPane fx:id="recordsOverlay" visible="false" managed="false"
+           pickOnBounds="true" styleClass="records-overlay">
+    <VBox spacing="10" alignment="TOP_CENTER"
+          minHeight="0" prefHeight="820" prefWidth="940"
+          maxHeight="1200" maxWidth="1000" styleClass="records-panel">
+        <HBox alignment="CENTER_LEFT" spacing="14">
+            <Label text="PARTIDAS" styleClass="records-title"/>
+            <Region HBox.hgrow="ALWAYS"/>
+            <Button fx:id="recordsCloseButton" text="Cerrar"
+                    onAction="#hideRecords" styleClass="victory-secondary-button"/>
+        </HBox>
+        <HBox alignment="CENTER" spacing="10">
+            <Button fx:id="recordsRankingButton" text="TOP 10"
+                    onAction="#selectRankingView" styleClass="records-mode-button"/>
+            <Button fx:id="recordsHistoryButton" text="HISTORIAL"
+                    onAction="#selectHistoryView" styleClass="records-mode-button"/>
+        </HBox>
+        <HBox alignment="CENTER" spacing="10">
+            <Button fx:id="recordsEasyButton" text="Fácil"
+                    onAction="#selectRecordsEasy" styleClass="record-tab-button"/>
+            <Button fx:id="recordsNormalButton" text="Normal"
+                    onAction="#selectRecordsNormal" styleClass="record-tab-button"/>
+            <Button fx:id="recordsHardButton" text="Difícil"
+                    onAction="#selectRecordsHard" styleClass="record-tab-button"/>
+        </HBox>
+        <Label fx:id="recordsDescriptionLabel" text="FÁCIL · 6 PAREJAS"
+               styleClass="records-description"/>
+
+        <!-- Cada vista tiene su propia lista de altura flexible. -->
+        <VBox fx:id="recordsRankingView" spacing="9" minHeight="0"
+              VBox.vgrow="ALWAYS">
+            <HBox alignment="CENTER_LEFT" spacing="9" styleClass="records-summary-row">
+                <VBox alignment="CENTER_LEFT" spacing="5" HBox.hgrow="ALWAYS"
+                      styleClass="records-summary-tile">
+                    <Label text="MARCAS EN TOP 10" styleClass="records-summary-title"/>
+                    <Label fx:id="recordsCountLabel" text="0 / 10"
+                           styleClass="records-summary-value"/>
+                </VBox>
+                <VBox alignment="CENTER_LEFT" spacing="5" HBox.hgrow="ALWAYS"
+                      styleClass="records-summary-tile">
+                    <Label text="MEJOR MARCA" styleClass="records-summary-title"/>
+                    <Label fx:id="recordsBestLabel" text="—"
+                           styleClass="records-summary-value"/>
+                </VBox>
+                <VBox alignment="CENTER_LEFT" spacing="5" HBox.hgrow="ALWAYS"
+                      styleClass="records-summary-tile">
+                    <Label text="MEDIA DESACIERTOS" styleClass="records-summary-title"/>
+                    <Label fx:id="recordsAverageMissesLabel" text="—"
+                           styleClass="records-summary-value"/>
+                </VBox>
+            </HBox>
+            <Label fx:id="recordsLatestLabel"
+                   text="Todavía no hay resultados en este ranking."
+                   wrapText="true" styleClass="records-latest"/>
+            <ScrollPane fx:id="recordsScroll" fitToWidth="true"
+                        hbarPolicy="NEVER" minHeight="0" prefHeight="390"
+                        VBox.vgrow="ALWAYS" styleClass="records-scroll">
+                <content>
+                    <VBox fx:id="recordsList" spacing="6" styleClass="records-list"/>
+                </content>
+            </ScrollPane>
+            <HBox alignment="CENTER_RIGHT">
+                <Button text="Borrar récords" onAction="#clearSelectedRecords"
+                        styleClass="records-danger-button"/>
+            </HBox>
+        </VBox>
+
+        <VBox fx:id="recordsHistoryView" spacing="9" minHeight="0"
+              visible="false" managed="false" VBox.vgrow="ALWAYS">
+            <HBox alignment="CENTER_LEFT" spacing="9" styleClass="records-summary-row">
+                <VBox alignment="CENTER_LEFT" spacing="5" HBox.hgrow="ALWAYS"
+                      styleClass="records-summary-tile">
+                    <Label text="PARTIDAS REGISTRADAS" styleClass="records-summary-title"/>
+                    <Label fx:id="historyCountLabel" text="0"
+                           styleClass="records-summary-value"/>
+                </VBox>
+                <VBox alignment="CENTER_LEFT" spacing="5" HBox.hgrow="ALWAYS"
+                      styleClass="records-summary-tile">
+                    <Label text="TIEMPO ACUMULADO" styleClass="records-summary-title"/>
+                    <Label fx:id="historyTimeLabel" text="0 min"
+                           styleClass="records-summary-value"/>
+                </VBox>
+                <VBox alignment="CENTER_LEFT" spacing="5" HBox.hgrow="ALWAYS"
+                      styleClass="records-summary-tile">
+                    <Label text="MEDIA DESACIERTOS" styleClass="records-summary-title"/>
+                    <Label fx:id="historyMissesLabel" text="—"
+                           styleClass="records-summary-value"/>
+                </VBox>
+            </HBox>
+            <Label fx:id="historyNoticeLabel"
+                   text="Estadísticas de las partidas registradas."
+                   wrapText="true" styleClass="records-history-note"/>
+            <ScrollPane fx:id="historyScroll" fitToWidth="true"
+                        hbarPolicy="NEVER" minHeight="0" prefHeight="390"
+                        VBox.vgrow="ALWAYS" styleClass="records-scroll">
+                <content>
+                    <VBox fx:id="historyList" spacing="6" styleClass="records-list"/>
+                </content>
+            </ScrollPane>
+            <HBox alignment="CENTER" spacing="12" styleClass="history-pagination">
+                <Button fx:id="historyPreviousButton" text="Anterior"
+                        onAction="#previousHistoryPage" styleClass="history-page-button"/>
+                <Label fx:id="historyPageLabel" text="Página 1 de 1"
+                       styleClass="history-page-label"/>
+                <Button fx:id="historyNextButton" text="Siguiente"
+                        onAction="#nextHistoryPage" styleClass="history-page-button"/>
+            </HBox>
+            <HBox alignment="CENTER_RIGHT">
+                <Button text="Borrar historial" onAction="#clearSelectedHistory"
+                        styleClass="records-danger-button"/>
+            </HBox>
+        </VBox>
+    </VBox>
+</StackPane>
+        </StackPane>
+    </center>
+
+    <bottom>
+        <HBox alignment="CENTER_LEFT" spacing="12" styleClass="app-footer">
+            <Label text="MEMORY DESKTOP" styleClass="footer-label"/>
+            <Region HBox.hgrow="ALWAYS"/>
+            <Button text="Salir" onAction="#exit" styleClass="footer-button"/>
+        </HBox>
+    </bottom>
+</BorderPane>
